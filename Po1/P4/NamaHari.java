@@ -1,4 +1,4 @@
-public class TugasAkhir {
+public class NamaHari {
     public static void main(String[] args) {
         String[] namahari = {"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"};
         
