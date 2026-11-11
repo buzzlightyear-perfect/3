@@ -11,22 +11,21 @@ Route::get('/halo', function () {
 Route::get('/info-kampus', function () {
     return [
         'universitas' => 'Universitas Jenderal Achmad Yani',
-        'fakultas'   => 'Fakultas Sains dan Informatika',
-        'jurusan'    => 'Informatika',
-        'tahun'      => 2024
+        'fakultas' => 'Fakultas Sains dan Informatika',
+        'jurusan' => 'Informatika',
+        'tahun' => 2024,
     ];
 });
 
 // Parameter Wajib
 Route::get('/mahasiswa/{nim}', function ($nim) {
-    return "Profil Mahasiswa dengan NIM: " . htmlspecialchars($nim);
+    return 'Profil Mahasiswa dengan NIM: '.htmlspecialchars($nim);
 })->whereNumber('nim'); // Constraint agar hanya menerima angka
 
 // Parameter Opsional dengan nilai default
 Route::get('/salam/{nama?}', function ($nama = 'Mahasiswa') {
-    return "Halo, Selamat Belajar " . htmlspecialchars($nama) . "!";
+    return 'Halo, Selamat Belajar '.htmlspecialchars($nama).'!';
 });
-
 
 Route::get('/tentang-laboratorium-web', function () {
     return 'Halaman Resmi Laboratorium Komputer dan Teknologi Web.';
@@ -42,17 +41,17 @@ Route::prefix('akademik')->name('akademik.')->group(function () {
 
     // Route Jadwal Perkuliahan
     Route::get('/jadwal', function () {
-        return "Jadwal Perkuliahan Semester Berjalan";
+        return 'Jadwal Perkuliahan Semester Berjalan';
     })->name('jadwal');
 
     // Route Pengisian KRS
     Route::get('/krs', function () {
-        return "Halaman Pengisian Kartu Rencana Studi (KRS)";
+        return 'Halaman Pengisian Kartu Rencana Studi (KRS)';
     })->name('krs');
 
     // Route Kartu Hasil Studi
     Route::get('/nilai', function () {
-        return "Kartu Hasil Studi (KHS) dan Transkrip Nilai";
+        return 'Kartu Hasil Studi (KHS) dan Transkrip Nilai';
     })->name('nilai');
 
 });
@@ -61,13 +60,12 @@ Route::prefix('akademik')->name('akademik.')->group(function () {
 
 // A. Route Katalog Buku dengan Parameter Kategori dan ID Buku
 Route::get('/katalog/{kategori}/{id_buku}', function ($kategori, $id_buku) {
-    return "Kategori Buku: " . htmlspecialchars($kategori) .
-           " | ID Buku: " . htmlspecialchars($id_buku);
+    return 'Kategori Buku: '.htmlspecialchars($kategori).
+           ' | ID Buku: '.htmlspecialchars($id_buku);
 })
 
 // B. Regex Constraint agar ID Buku hanya menerima angka
-->where('id_buku', '[0-9]+');
-
+    ->where('id_buku', '[0-9]+');
 
 // C. Route Group dengan Prefix Pustakawan
 Route::prefix('pustakawan')->group(function () {
@@ -89,6 +87,17 @@ Route::prefix('pustakawan')->group(function () {
 
 });
 
+use App\Http\Controllers\DosenController;
+use App\Http\Controllers\MahasiswaController;
+
+// Rute Controller Mahasiswa
+Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+Route::get('/mahasiswa/tambah', [MahasiswaController::class, 'create'])->name('mahasiswa.create');
+Route::post('/mahasiswa', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
+
+// Rute Controller Dosen
+Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
+Route::get('/dosen/tambah', [DosenController::class, 'create'])->name('dosen.create');
 
 // D. Fallback Route
 Route::fallback(function () {
